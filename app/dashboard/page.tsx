@@ -1,6 +1,6 @@
 'use client' 
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo,useRef } from 'react'
 import { useRouter } from 'next/navigation'
 // Import ikon yang diperlukan
 import {
@@ -103,6 +103,10 @@ export default function DashboardPage() {
   // STATE PAGINATION
   const ROWS_PER_PAGE = 15 
   const [currentPage, setCurrentPage] = useState(1)
+
+  // TAMBAHKAN DUA BARIS INI
+  const startDateRef = useRef<HTMLInputElement>(null)
+  const endDateRef = useRef<HTMLInputElement>(null)
 
 
   // --- LOGIKA OTENTIKASI & DUMMY DATA ---
@@ -301,7 +305,7 @@ export default function DashboardPage() {
         // Tambahkan border-r untuk pemisah kolom
         `cursor-pointer hover:bg-gray-700/50 transition-colors duration-150 text-gray-400 border-r border-gray-700 last:border-r-0`, 
         `text-${align}`,
-        `min-w-[100px]` // Tambahkan min-width dasar untuk mencegah kompresi berlebihan
+        `min-w-[120px]` // Tambahkan min-width dasar untuk mencegah kompresi berlebihan
       )}
       onClick={() => handleSort(sortKeyName)}
     >
@@ -424,28 +428,44 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-3 items-end"> 
                 
                 {/* Filter Tanggal Mulai (Full width di mobile) */}
-                <div className="flex flex-col gap-1 w-full xs:w-[calc(50%-6px)] sm:w-[150px]">
-                    <Label htmlFor="startDateFilter" className="text-gray-400 text-sm">Tanggal Mulai</Label>
-                    <Input 
-                        id="startDateFilter"
-                        type="date"
-                        value={startDateFilter || ''}
-                        onChange={(e) => setStartDateFilter(e.target.value || null)}
-                        className="bg-gray-700 border-gray-600 text-white rounded-lg h-9 transition-colors hover:border-cyan-500"
-                    />
-                </div>
-                
-                {/* Filter Tanggal Akhir (Full width di mobile) */}
-                <div className="flex flex-col gap-1 w-full xs:w-[calc(50%-6px)] sm:w-[150px]">
-                    <Label htmlFor="endDateFilter" className="text-gray-400 text-sm">Tanggal Akhir</Label>
-                    <Input 
-                        id="endDateFilter"
-                        type="date"
-                        value={endDateFilter || ''}
-                        onChange={(e) => setEndDateFilter(e.target.value || null)}
-                        className="bg-gray-700 border-gray-600 text-white rounded-lg h-9 transition-colors hover:border-cyan-500"
-                    />
-                </div>
+                  <div className="relative flex flex-col gap-1 w-full xs:w-[calc(50%-6px)] sm:w-[200px]">
+                      <Label htmlFor="startDateFilter" className="text-gray-400 text-sm">Tanggal Mulai</Label>
+                      
+                      {/* Ikon Kalender Kustom dari Lucide */}
+                      <CalendarIcon 
+                      onClick={() => startDateRef.current?.showPicker()}
+                      className="absolute bottom-2.5 right-3 h-4 w-4 text-gray-400 cursor-pointer" />
+                      
+                      <Input 
+                          id="startDateFilter"
+                          ref={startDateRef}
+                          type="date"
+                          value={startDateFilter || ''}
+                          onChange={(e) => setStartDateFilter(e.target.value || null)}
+                          // Tambahkan pr-10 agar teks tidak menimpa ikon
+                          className="bg-gray-700 border-gray-600 text-white rounded-lg h-9 transition-colors hover:border-cyan-500 pr-10"
+                      />
+                  </div>
+
+                  {/* Filter Tanggal Akhir (Full width di mobile) */}
+                  <div className="relative flex flex-col gap-1 w-full xs:w-[calc(50%-6px)] sm:w-[200px]">
+                      <Label htmlFor="endDateFilter" className="text-gray-400 text-sm">Tanggal Akhir</Label>
+
+                      {/* Ikon Kalender Kustom dari Lucide */}
+                      <CalendarIcon 
+                      onClick={() => endDateRef.current?.showPicker()}
+                      className="absolute bottom-2.5 right-3 h-4 w-4 text-gray-400 cursor-pointer" />
+
+                      <Input 
+                          id="endDateFilter"
+                          ref={endDateRef}
+                          type="date"
+                          value={endDateFilter || ''}
+                          onChange={(e) => setEndDateFilter(e.target.value || null)}
+                          // Tambahkan pr-10 agar teks tidak menimpa ikon
+                          className="bg-gray-700 border-gray-600 text-white rounded-lg h-9 transition-colors hover:border-cyan-500 pr-10"
+                      />
+                  </div>
 
                 {/* Filter Driver (Admin Only - Full width di mobile) */}
                 {user?.role === 'admin' && (
@@ -513,30 +533,30 @@ export default function DashboardPage() {
                         
                         {/* 1. TANGGAL (CENTER, Format DD-MM-YYYY) */}
                         {/* GARIS PEMISAH VERTIKAL */}
-                        <TableCell className="text-center font-medium text-cyan-400 border-r border-gray-700">{formatDate(shipment.tanggal)}</TableCell> 
+                        <TableCell className="py-3 text-center font-medium text-cyan-400 border-r border-gray-700">{formatDate(shipment.tanggal)}</TableCell> 
 
                         {/* 2. NAMA DRIVER (LEFT, ADMIN ONLY) */}
                         {user?.role === 'admin' && (
-                            <TableCell className="text-left text-gray-300 border-r border-gray-700">{shipment.nama_lengkap}</TableCell>
+                            <TableCell className="py-3 pl-4 text-left text-gray-300 border-r border-gray-700">{shipment.nama_lengkap}</TableCell>
                         )}
                         
                         {/* 3. SHIPMENT (CENTER) */}
-                        <TableCell className="text-center text-gray-300 border-r border-gray-700">{shipment.shipment}</TableCell> 
+                        <TableCell className="py-3 text-center text-gray-300 border-r border-gray-700">{shipment.shipment}</TableCell> 
                         {/* 4. JUMLAH TOKO (CENTER) */}
-                        <TableCell className="text-center text-gray-300 border-r border-gray-700">{shipment.jumlah_toko}</TableCell> 
+                        <TableCell className="py-3 text-center text-gray-300 border-r border-gray-700">{shipment.jumlah_toko}</TableCell> 
                         {/* 5. TERKIRIM (CENTER) */}
-                        <TableCell className="text-center text-green-400 font-semibold border-r border-gray-700">{shipment.terkirim}</TableCell> 
+                        <TableCell className="py-3 text-center text-green-400 font-semibold border-r border-gray-700">{shipment.terkirim}</TableCell> 
                         {/* 6. GAGAL (CENTER) */}
-                        <TableCell className="text-center text-red-400 font-semibold border-r border-gray-700">{shipment.gagal}</TableCell> 
+                        <TableCell className="py-3 text-center text-red-400 font-semibold border-r border-gray-700">{shipment.gagal}</TableCell> 
                         
                         {/* 9. ALASAN (LEFT, Truncate) */}
-                        <TableCell className="text-left text-gray-400 max-w-xs truncate border-r border-gray-700" title={shipment.alasan}>
+                        <TableCell className="py-3 pl-4 text-left text-gray-400 max-w-xs truncate border-r border-gray-700" title={shipment.alasan}>
                             {shipment.alasan || '-'}
                         </TableCell>
                         
                         {/* 10. AKSI (RIGHT, Ikon) - Hapus border-r pada kolom terakhir */}
                         <TableCell className="text-right">
-                            <div className="flex justify-center space-x-7">
+                            <div className="py-3 flex justify-center space-x-7">
                             <Button 
                                 variant="ghost" 
                                 size="icon" 

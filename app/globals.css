@@ -23,3 +23,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Sembunyikan ikon kalender bawaan di Chrome/Edge/Safari */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Sembunyikan ikon kalender bawaan di Firefox (meskipun Firefox sering tidak menampilkannya) */
+input[type="date"]::-moz-calendar-picker-indicator {
+    display: none;
+}
