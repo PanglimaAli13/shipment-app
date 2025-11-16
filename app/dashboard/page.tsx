@@ -77,8 +77,6 @@ const StatCard = ({ title, value, icon: Icon, description, colorClass }: {
     </CardContent>
   </Card>
 )
-
-
 // ==========================================================
 // KOMPONEN UTAMA DASHBOARD
 // ==========================================================
