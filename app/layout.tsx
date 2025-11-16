@@ -1,26 +1,24 @@
-// 📂 app/dashboard/layout.tsx
-
-import Sidebar from "@/components/sidebar";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
-export default function DashboardLayout({
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Shipment App',
+  description: 'Aplikasi manajemen pengiriman modern.',
+}
+
+export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    // Kontainer utama dengan layout Flex
-    <div className="flex min-h-screen bg-gray-50/50 dark:bg-gray-950/90 transition-colors duration-300">
-      
-      {/* Sidebar yang elegan dan dapat dilipat */}
-      {/* Kita sembunyikan di layar kecil dan tampilkan di layar sedang ke atas (md:flex) */}
-      <div className="hidden md:flex flex-shrink-0">
-          <Sidebar />
-      </div>
-      
-      {/* Konten Utama */}
-      <main className="flex-1 overflow-y-auto w-full">
+    <html lang="en" className="dark">
+      <body className={inter.className + " bg-gray-900"}>
         {children}
-      </main>
-    </div>
-  );
+      </body>
+    </html>
+  )
 }

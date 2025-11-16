@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ========================================================= */
+/* 1. TEMA DASAR APLIKASI (Dark Mode & Font)                 */
+/* ========================================================= */
+
+:root {
+  /* Font default yang bersih dan modern */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  
+  /* --- VARIABEL BACKGROUND KUSTOM UNTUK LOGIN --- */
+  /* Ganti nilai url('/background.jpg') ini kapan pun Anda ingin mengganti gambar background! 
+     Pastikan file 'background.jpg' ada di folder public/ */
+  --login-background: url('/login-background.jpg');
+}
+
+body {
+  /* Set background default untuk seluruh aplikasi ke warna gelap (gray-900) dan teks putih/terang */
+  @apply bg-gray-900 text-gray-100;
+  /* Tambahkan anti-aliasing untuk tampilan font yang lebih halus */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
